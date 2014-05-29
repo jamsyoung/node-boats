@@ -76,7 +76,7 @@ app.get('/api/v1/motorspeed/:value', function (req, res) {
     if (req.params.value <= 255 && req.params.value >= -255) {
         postToSparkApi(sparkRequestUri, req.params.value, res);
     } else {
-        console.error('value must be between -255 adn 255');
+        console.error('value must be between -255 and 255');
 
         res.json({
             error: 'value must be between -255 and 255'
