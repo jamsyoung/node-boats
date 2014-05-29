@@ -20,7 +20,7 @@ app = express();
 function postToSparkApi(endpoint, args, res) {
     console.log('POST request to: %s with args: %s', endpoint, args);
 
-    request.post(endpoint, function (error, response, body) {
+    request.post({ timeout: 1000 * 2, url: endpoint }, function (error, response, body) {
         if (error) {
             console.error('error: %j', error);
             res.json(error);
