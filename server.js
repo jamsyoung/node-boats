@@ -31,19 +31,41 @@ app.get('/', function (req, res) {
 
 
 /* api routes */
-app.get('/api/v1/:func/:value', function (req, res) {
+app.get('/api/v1/test/:func/:value', function (req, res) {
 
     request.post(sparkEndpoint + deviceId + '/' + req.params.func).form({
         access_token: accessToken,
         args: req.params.value
     });
 
-    res.json({
-        func: req.params.func,
-        value: req.params.value
-    });
+    res.json({func: req.params.func, value: req.params.value});
 });
 
+app.get('/api/v1/motorspeed/:value', function (req, res) {
+    if (req.params.value <= 255 && req.params.value >= -255) {
+        request.post(sparkEndpoint + deviceId + '/motorSpeed').form({
+            access_token: accessToken,
+            args: req.params.value
+        });
+
+        res.json({func: 'motorSpeed', value: req.params.value});
+    } else {
+        res.json({error: 'value must be between -255 and 255'});
+    }
+});
+
+app.get('/api/v1/angle/:value', function (req, res) {
+    if (req.params.value <= 175 && req.params.value >= 0) {
+        request.post(sparkEndpoint + deviceId + '/angle').form({
+            access_token: accessToken,
+            args: req.params.value
+        });
+
+        res.json({func: 'angle', value: req.params.value});
+    } else {
+        res.json({error: 'value must be between 0 and 175'});
+    }
+});
 
 
 /* logs */
