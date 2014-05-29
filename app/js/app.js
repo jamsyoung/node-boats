@@ -1,28 +1,34 @@
-angular.module('boat', [])
-    .controller('boatController',['$scope', function ($scope){
+var boat = angular.module('boat', []);
 
-        $scope.power = false;
+boat.controller('boatController',['$scope', '$http', function ($scope, $http){
 
-        /* 1 = forward */
-        $scope.direction = 1;
-        $scope.directionText = 'Forward';
+        function log (method, message) {
+            $http.post('/log/add', message).success(function(){console.log('win')});
+            console.log(method + ': ' + message);
+        }
 
-        $scope.speed = 0;
+        function trigger (method) {
+            $http({ method: 'POST', url: '/api/v1/' + method + '/' + $scope[method] }).
+                success(function (data, status, headers, config) {
+                    log(method, 'it worked');
+                }).
+                error(function (data, status, headers, config) {
+                    log(method, 'it failed');
+                });
+        }
+
+        $scope.motorspeed = 0;
         $scope.turn = 90;
 
         $scope.togglePower = function () {
-            console.log('switching power');
-            $scope.power = ($scope.power === false) ? true: false;
+            $scope.motorspeed = 0
         };
 
-        $scope.toggleDirection = function () {
+        $scope.$watch('motorspeed', function () {
+            trigger('motorspeed');
+        });
 
-            if ($scope.direction === 1) {
-                $scope.direction = 0;
-                $scope.directionText = 'Reverse';
-            } else {
-                $scope.direction = 1;
-                $scope.directionText = 'Forward';
-            }
-        };
+        $scope.$watch('turn', function () {
+            trigger('turn');
+        });
 }]);
