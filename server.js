@@ -14,6 +14,32 @@ var
 
 app = express();
 
+/*
+ * This should be a dependent library
+ */
+function postToSparkApi(endpoint, args, res) {
+    console.log('POST request to: %s with args: %s', endpoint, args);
+
+    request.post(endpoint, function (error, response, body) {
+        if (error) {
+            console.error('error: %j', error);
+            res.json(error);
+        }
+
+        console.log('response from %s: %s', endpoint, body);
+
+        res.json({
+            endpoint: endpoint,
+            value: args,
+            response: JSON.parse(body)
+        });
+    }).form({
+        access_token: accessToken,
+        args: args
+    });
+}
+
+
 
 /* middleware */
 app.use(logger());
@@ -48,25 +74,7 @@ app.get('/api/v1/motorspeed/:value', function (req, res) {
     var sparkRequestUri = sparkEndpoint + deviceId + '/motorSpeed';
 
     if (req.params.value <= 255 && req.params.value >= -255) {
-        console.log('POST request to: %s with args: %s', sparkRequestUri, req.params.value);
-
-        request.post(sparkRequestUri, function (error, response, body) {
-            if (error) {
-                console.error('error: %j', error);
-                res.json(error);
-            }
-
-            console.log('response from %s: %s', sparkRequestUri, body);
-
-            res.json({
-                func: 'motorSpeed',
-                value: req.params.value,
-                response: JSON.parse(body)
-            });
-        }).form({
-            access_token: accessToken,
-            args: req.params.value
-        });
+        postToSparkApi(sparkRequestUri, req.params.value, res);
     } else {
         console.error('value must be between -255 adn 255');
 
@@ -80,25 +88,7 @@ app.get('/api/v1/angle/:value', function (req, res) {
     var sparkRequestUri = sparkEndpoint + deviceId + '/angle';
 
     if (req.params.value <= 175 && req.params.value >= 0) {
-        console.log('POST request to: %s with args: %s', sparkRequestUri, req.params.value);
-
-        request.post(sparkRequestUri, function (error, response, body) {
-            if (error) {
-                console.error('error: %j', error);
-                res.json(error);
-            }
-
-            console.log('response from %s: %s', sparkRequestUri, body);
-
-            res.json({
-                func: 'angle',
-                value: req.params.value,
-                response: JSON.parse(body)
-            });
-        }).form({
-            access_token: accessToken,
-            args: req.params.value
-        });
+        postToSparkApi(sparkRequestUri, req.params.value, res);
     } else {
         console.error('value must be between 0 and 175');
 
