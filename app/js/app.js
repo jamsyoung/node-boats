@@ -3,12 +3,12 @@ var boat = angular.module('boat', []);
 boat.controller('boatController',['$scope', '$http', function ($scope, $http){
 
         function log (method, message) {
-            $http.post('/log/add', message).success(function(){console.log('win')});
+            // $http.get('/log/add', message).success(function(){console.log('win')});
             console.log(method + ': ' + message);
         }
 
         function trigger (method) {
-            $http({ method: 'POST', url: '/api/v1/' + method + '/' + $scope[method] }).
+            $http({ method: 'GET', url: '/api/v1/' + method + '/' + $scope[method] }).
                 success(function (data, status, headers, config) {
                     log(method, 'it worked');
                 }).
@@ -18,7 +18,7 @@ boat.controller('boatController',['$scope', '$http', function ($scope, $http){
         }
 
         $scope.motorspeed = 0;
-        $scope.turn = 90;
+        $scope.angle = 90;
 
         $scope.togglePower = function () {
             $scope.motorspeed = 0
@@ -28,7 +28,7 @@ boat.controller('boatController',['$scope', '$http', function ($scope, $http){
             trigger('motorspeed');
         });
 
-        $scope.$watch('turn', function () {
-            trigger('turn');
+        $scope.$watch('angle', function () {
+            trigger('angle');
         });
 }]);
