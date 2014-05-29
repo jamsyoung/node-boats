@@ -1,5 +1,7 @@
 var Cylon = require('cylon');
 
+console.log('im here');
+
 Cylon.robot({
   connection: {
     name: 'spark',

@@ -9,6 +9,7 @@ var
     logger = require('morgan'),
     path = require('path'),
     request = require('request'),
+    boat = require('./app.js'),
     port = process.env.PORT || process.env.npm_config_port || process.env.npm_package_config_port || 3000;
 
 app = express();
