@@ -16,13 +16,19 @@ app = express();
 /* middleware */
 app.use(logger());
 app.use(bodyParser());
+app.engine('html', require('ejs').renderFile);
+app.set('view engine', 'html');
+app.use(express['static'](path.join(__dirname, '/app')));
+app.set('views', path.join(__dirname, '/app/views'));
 
 /* application routes */
 
+/* main page */
 app.get('/', function (req, res) {
     res.render('index.html');
 });
 
+/* logs */
 app.get('/log', function (req, res) {
     res.render('logs.html');
 });
