@@ -1,0 +1,12 @@
+.DS_Store
+.project
+.sass-cache
+Gemfile.lock
+docs
+node_modules
+npm-debug.log
+public/*
+resources.json
+tmp
+out
+_ngtvsprite.scss
