@@ -8,7 +8,7 @@ var
     express = require('express'),
     logger = require('morgan'),
     path = require('path'),
-    port = process.env.npm_package_config_port || 3000,
+    port = process.env.PORT || process.env.npm_package_config_port || 3000,
     request = require('request'),
     sparkEndpoint = 'https://api.spark.io/v1/devices/';
 
