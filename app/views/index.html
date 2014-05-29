@@ -6,8 +6,46 @@
     <title>Node Boats</title>
     <meta name="description" content="2014 JSConf Node Boats">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="../css/styles.css" rel="stylesheet" />
 </head>
 <body>
-    <h1>I'm Beached!</h1>
+
+    <!-- controls -->
+    <div class="container" ng-app="boat" ng-controller="boatController">
+
+        <button ng-click="togglePower()">Power {{power}}</button>
+
+        <label for="direction">Current Direction: <span ng-bind="direction">{{directionText}}</span></label>
+        <button id="direction" ng-click="toggleDirection()">{{directionText}}</button>
+
+        <div>
+            <label for="speed">Speed</label>
+            <input id="speed" type="range" min="0" max="255" value="0" ng-model="speed" />
+            <div ng-bind="speed"></div>
+        </div>
+
+        <div>
+            <label for="turn">Turn <span ng-bind="turn"></span></label>
+            <span>Left</span><input id="turn" type="range" min="0" max="180" step="10" ng-model="turn" /><span>Right</span>
+        </div>
+
+    </div>
+
+    <!-- attribution -->
+    <div class="attribution">Background animation and images from: <a href="http://codepen.io/Treehouse/pen/JKaAE">codepen.io</a></div>
+
+    <!-- background -->
+    <div class="boat">
+        <img src="http://treehouse-code-samples.s3.amazonaws.com/CSS-DD/codepen/stage-12/boat.png" alt="tugboat">
+    </div>
+
+    <img class="mike" src="http://treehouse-code-samples.s3.amazonaws.com/CSS-DD/codepen/stage-12/mike.png">
+
+    <!-- scripts -->
+    <script src="/vendor/angular/angular.min.js"></script>
+    <script src="/vendor/angular-resource/angular-resource.min.js"></script>
+    <script src="/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="/js/app.js"></script>
+
 </body>
 </html>

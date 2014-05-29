@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="logViewModule">
+  <head>
+    <!-- include common header elements -->
+    <% include app_common/app_header.html %> 
+
+    <!-- Custom styles for this template -->
+    <link href="./css/log.css" rel="stylesheet">
+
+  </head>
+
+  <body>
+
+    <!-- include the app navigation -->
+    <% include app_common/app_nav.html %>
+
+
+    <div class="container" ng-controller="logController">
+      <div class="btn-group">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+          Action <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+          <li><a href="#" id="pauseClientLogs"><span class="glyphicon" ng-class="{true : 'glyphicon-pause', false : 'glyphicon-play'}[running]"></span> {{running | iif: 'Pause':'Play'}}</a></li>
+          <li><a href="#" id="clearLogsAction"><span class="glyphicon glyphicon-remove"></span> Clear Local</a></li>
+          <li><a href="#" id="clearServerLogsAction"><i class="glyphicon glyphicon-trash"></i> Clear Server</a></li>
+        </ul>
+      </div>
+
+      <form class="form-inline pull-right filter">
+        <div class="input-group">
+          <span class="input-group-addon"><span class="glyphicon glyphicon-filter"></span></span>
+          <input id="logFilter" type="text" class="form-control" placeholder="Enter Filter" ng-model="logFilter">
+        </div>
+      </form>
+      <table class="table table-bordered table-condensed table-hover logTable"> 
+        <thead>
+          <tr>
+            <th colspan="4" class="lead">Messages <span style="float:right;">(<span>{{logMessages.length}}</span>)</span> <span class="filterDisplay text-muted">{{logFilter}}</span></th>
+          </tr>
+        </thead>
+        <tbody ng-repeat="log in logMessages | filter:logFilter">
+          <tr ng-class="{E : 'danger', W : 'warning'}[log.level]">
+            <td>{{log.date | date:'MM-dd-yyyy HH:mm:ss'}}</td>
+            <td>{{log.level}}</td>
+            <td>{{log.source}}</td>
+            <td><span style="white-space: pre;">{{log.message}}</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div><!-- /.container -->
+
+
+    <!-- Placed at the end of the document so the pages load faster -->
+    <!-- common scripts the applicaiton requires (jquery and angularjs included) -->
+    <% include app_common/app_scripts.html %>
+
+
+     <script>
+
+     
+      
+      $(".log").addClass('active');
+
+      var app = angular.module('logViewModule', []);
+
+      app.filter('iif', function () {
+         return function(input, trueValue, falseValue) {
+              return input ? trueValue : falseValue;
+         };
+      })
+      
+      app.controller('logController', function ($scope) {
+        $scope.logMessages = <%- JSON.stringify(logHistory) %>;
+        $scope.running = true;
+
+        var socket = io.connect('<%-requestURL + logSocketNS%>');
+
+          socket.on('connect', function() {
+            console.log('socket io connected');
+          });
+
+          socket.on('log_data', function (data) {
+            if($scope.running){
+              $scope.$apply(function () {
+                $scope.logMessages.unshift(data);
+              });
+            }
+          });
+
+
+          $(document).ready(function (){
+
+            $("#clearLogsAction").click(function() {
+                 $scope.$apply(function() {$scope.logMessages.length = 0});
+              });
+              
+              $("#clearServerLogsAction").click(function(){
+                 $.get("/log/clear");
+                 $scope.$apply(function() {$scope.logMessages.length = 0});
+              });
+
+              $("#pauseClientLogs").click(function(){
+                $scope.$apply(function() {$scope.running = !$scope.running;});
+              }); 
+              
+          });
+
+      });
+      
+        
+  
+      </script>
+
+  </body>
+</html>
