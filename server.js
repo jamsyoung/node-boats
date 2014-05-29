@@ -1,28 +1,89 @@
 'use strict';
 
+// var
+// <<<<<<< HEAD
+//     http = require('http'),
+// =======
+//     accessToken = '868ea91f13af5f3e18b4c69875a011155a2c82d8',
+//     app,
+// >>>>>>> master
+//     bodyParser = require('body-parser'),
+//     deviceId = '51ff6f065067545715550287',
+//     express = require('express'),
+// <<<<<<< HEAD
+//     app = express(),
+//     ejs = require('ejs'),
+//     logger = require('./logger/lib/logger'),
+// =======
+//     logger = require('morgan'),
+// >>>>>>> master
+//     path = require('path'),
+//     port = process.env.npm_package_config_port || 3000,
+//     request = require('request'),
+// <<<<<<< HEAD
+//     boat = require('./app.js'),
+//     server = require('http').createServer(app),
+//     io = require('socket.io').listen(server),
+//     port = process.env.PORT || process.env.npm_config_port || process.env.npm_package_config_port || 3000;
+
+// =======
+//     sparkEndpoint = 'https://api.spark.io/v1/devices/';
+
+// app = express();
+
+
+// >>>>>>> master
+
+
 var
-    accessToken = '868ea91f13af5f3e18b4c69875a011155a2c82d8',
-    app,
     bodyParser = require('body-parser'),
     deviceId = '51ff6f065067545715550287',
     express = require('express'),
-    logger = require('morgan'),
+    app = express(),
+    ejs = require('ejs'),
+    logger = require('./logger/lib/logger'),
     path = require('path'),
     port = process.env.npm_package_config_port || 3000,
     request = require('request'),
-    sparkEndpoint = 'https://api.spark.io/v1/devices/';
+    sparkEndpoint = 'https://api.spark.io/v1/devices/',
+    server = require('http').createServer(app),
+    io = require('socket.io').listen(server),
+    accessToken = '868ea91f13af5f3e18b4c69875a011155a2c82d8';
 
-app = express();
+
+
+
+
+
+
+
+
+
 
 
 /* middleware */
-app.use(logger());
 app.use(bodyParser());
-app.engine('html', require('ejs').renderFile);
-app.set('view engine', 'html');
-app.use(express['static'](path.join(__dirname, '/app')));
-app.set('views', path.join(__dirname, '/app/views'));
+app.use(express['static'](__dirname + '/app'));
+app.use(express['static'](__dirname + '/logger/public'));
 
+app.set('view engine', 'ejs');
+app.set('views', path.normalize(__dirname + '/logger/views'));
+app.engine('html', require('ejs').__express);
+
+/* logger */
+logger.init(io, true, 100);
+
+/* application routes */
+app.get(/^\/(index.html)?$/i, function (request, response) {
+    response.sendfile('./app/views/index.html');
+});
+
+/* logging */
+app.get('/log', logger.view);
+app.get('/log/add', logger.add);
+app.get('/log/logmessage', logger.add);
+app.get('/log/clear', logger.clear);
+app.get('/log/test', logger.test);
 
 /* application routes */
 app.get('/', function (req, res) {
@@ -66,13 +127,6 @@ app.get('/api/v1/angle/:value', function (req, res) {
         res.json({error: 'value must be between 0 and 175'});
     }
 });
-
-
-/* logs */
-app.get('/log', function (req, res) {
-    res.render('logs.html');
-});
-
 
 /* start server */
 console.log('node boat listening on port %d, cap\'n', port);

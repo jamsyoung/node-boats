@@ -1,0 +1,8 @@
+/*include the bootstrap-glyphicons from CDN (this will need to be updated when new version of BS3 are released)*/
+@import url("//netdna.bootstrapcdn.com/bootstrap/3.0.0-rc2/css/bootstrap-glyphicons.css");
+
+body {
+  padding-top: 60px;
+}
+
+
