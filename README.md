@@ -22,6 +22,7 @@ $ npm install
 $ npm start
 ```
 
+
 ## The Frontend
 You can view the [AngularJS][angularjs] frontend app at <http://localhost:3000>.
 The angular app makes calls to the backend API, which in turn calls a spark.io
@@ -43,6 +44,18 @@ The backend is an [ExpressJS][expressjs] server.
 ### API Examples
 - <http://localhost:3000/api/v1/motorspeed/100> - Moving forward at a little under half power.
 - <http://localhost:3000/api/v1/angle/67> - Turning left.
+
+
+## How to flash your Spark Core
+This assumes you already have your Spark Core setup and connected on a wireless
+network.
+
+```shell
+$ npm install --global spark-cli
+$ spark flash [deviceId] node-boats.ino
+```
+
+
 
 
 [jsconf]: http://2014.jsconf.us
