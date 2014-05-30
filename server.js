@@ -6,7 +6,7 @@ var
     bodyParser = require('body-parser'),
     deviceId = '51ff6f065067545715550287',
     express = require('express'),
-    logger = require('morgan'),
+    //logger = require('morgan'),
     path = require('path'),
     port = process.env.PORT || process.env.npm_package_config_port || 3000,
     request = require('request'),
@@ -42,13 +42,13 @@ function postToSparkApi(endpoint, args, res) {
 
 
 /* middleware */
-app.use(logger());
+//app.use(logger());
 app.use(bodyParser());
 app.use(express['static'](__dirname + '/app'));
-app.use(express['static'](__dirname + '/logger/public'));
+//app.use(express['static'](__dirname + '/logger/public'));
 
 app.set('view engine', 'ejs');
-app.set('views', path.normalize(__dirname + '/logger/views'));
+//app.set('views', path.normalize(__dirname + '/logger/views'));
 app.engine('html', require('ejs').__express);
 
 
