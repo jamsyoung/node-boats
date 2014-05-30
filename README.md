@@ -7,7 +7,7 @@ comprised of:
 - James Young
 - Matt Crutchfield
 
-The goals of our team was to create a node powered boat, race it across a pool,
+The goals of our team were to create a node powered boat, race it across a pool,
 and win.  We successfully accomplished all three goals.
 
 
