@@ -1,10 +1,16 @@
 # Node Boats!
+This was a [hack day][hackday] at [JSConf 2014][jsconf].  Our team was
+comprised of:
 
-Spark Core info
-  token: '0bc79319ead58ae701a6d72f86f04441362f378a'
-  deviceId: '0bc79319ead58ae701a6d72f86f04441362f378a'
+- Matthew Drooker
+- Brian O'Neil
+- James Young
+- Matt Crutchfield
 
-## How to setup the spark
-```shell
-$ spark setup wifi
-```
+The goals of our team was to create a node powered boat, race it across a pool,
+and win.  We successfully accomplished all three goals.
+
+
+
+[jsconf]: http://2014.jsconf.us/
+[hackday]: http://2014.jsconf.us/schedule.html#cyoa
